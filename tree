@@ -1,0 +1,73 @@
+#pragma warning (disable :4996)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct NODE {
+	struct NODE *left;
+	struct NODE *right;
+	int data;
+}NODE;
+NODE *getNode() {
+	NODE *p;
+	p = (NODE*)malloc(sizeof(NODE));
+	p->data = NULL;
+	p->data = 0;
+	p->left = NULL;
+	p->right = NULL;
+	return p;
+}
+void Builder(NODE *p, int data, int Ldata, int Rdata) {
+	NODE *left, *right;
+	left = getNode();
+	right = getNode();
+	p->data = data;
+	if (Ldata == 0) left = NULL;
+	else left->data = Ldata;
+	if (Rdata == 0) right = NULL;
+	else right->data = Rdata;
+	p->left = left;
+	p->right = right;
+}
+void ADDL(NODE *p, int D, int L, int R) {
+	if (p->data == D) Builder(p, D, L, R);
+	if(p->left !=NULL) ADDL(p->left, D, L, R);
+	if (p->right != NULL) ADDL(p->right, D, L, R);
+}
+void print(NODE *p,char ch[]) {
+	NODE *show;
+	show = p;
+	int i;
+	printf(" %d", show->data);
+	for (i = 0; i < strlen(ch); i++) {
+		if (ch[i] == 'L') {
+			show = show->left;
+			printf(" %d", show->data);
+		}
+		else if (ch[i] == 'R') {
+			show = show->right;
+			printf(" %d", show->data);
+		}
+	}
+	printf("\n");
+}
+int main() {
+	NODE *p;
+	int D, L, R;
+	char ch[101] = { '\0' };
+	int N;
+	int M;
+	int i;
+	p = getNode();
+	scanf(" %d", &N);
+	scanf(" %d %d %d", &D, &L, &R);
+	Builder(p, D, L, R);
+	for (i = 1; i < N; i++) {
+	scanf(" %d %d %d", &D, &L, &R);
+	ADDL(p, D, L, R);
+	}
+	scanf(" %d", &M);
+	for (i = 0; i < M; i++) {
+		scanf("%s", (ch));
+		print(p, ch);
+	}
+}
